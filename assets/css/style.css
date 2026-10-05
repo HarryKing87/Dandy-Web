@@ -140,7 +140,7 @@ h4 { font-size: 20px; margin-bottom: 6px; }
     transition: transform .4s var(--ease), box-shadow .4s var(--ease), border-color .4s;
 }
 .card:hover { transform: translateY(-4px); border-color: #C9D9D1; box-shadow: 0 24px 40px -28px rgba(20,88,74,.45); }
-.card.wide { grid-column: span 3; }
+.card.wide { grid-column: span 4; }
 .card p { color: var(--muted); font-size: 15px; }
 .card q { color: var(--ink); font-weight: 600; quotes: none; }
 
