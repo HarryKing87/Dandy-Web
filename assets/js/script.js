@@ -1,36 +1,24 @@
-// Stagger animations on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+// Header border once the page scrolls.
+const top = document.querySelector('.top');
+const onScroll = () => top.classList.toggle('scrolled', window.scrollY > 8);
+onScroll();
+window.addEventListener('scroll', onScroll, { passive: true });
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-            setTimeout(() => {
-                entry.target.style.opacity = '1';
-                entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
-            }, index * 100);
-            observer.unobserve(entry.target);
-        }
+// Reveal elements as they enter the viewport. Skipped for reduced motion (CSS also handles it).
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const items = document.querySelectorAll('.reveal');
+if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+} else {
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    items.forEach((el, i) => {
+        el.style.transitionDelay = `${(i % 3) * 80}ms`;
+        io.observe(el);
     });
-}, observerOptions);
-
-document.querySelectorAll('.fade-in').forEach(el => {
-    el.style.opacity = '0';
-    observer.observe(el);
-});
-
-// Smooth scroll behavior for CTAs
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        if (href !== '#' && document.querySelector(href)) {
-            e.preventDefault();
-            document.querySelector(href).scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
+}
