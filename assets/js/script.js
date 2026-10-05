@@ -1,6 +1,6 @@
 // Header border once the page scrolls.
-const top = document.querySelector('.top');
-const onScroll = () => top.classList.toggle('scrolled', window.scrollY > 8);
+const header = document.querySelector('.top');
+const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 8);
 onScroll();
 window.addEventListener('scroll', onScroll, { passive: true });
 
